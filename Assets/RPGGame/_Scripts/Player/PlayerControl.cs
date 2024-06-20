@@ -19,7 +19,11 @@ public class PlayerControl : MonoBehaviour
 
     [SerializeField] private State state = State.None;
 
+    // 이동을 위해 캐릭터 컴트롤러 컴포넌트 사용.
     [SerializeField] private CharacterController characterController;
+
+    // 애니메이션 설정을 위해 Animator 컴포넌트 변수 사용.
+    [SerializeField] private Animator refAnimator;
 
     private void Idle()
     {
@@ -28,9 +32,25 @@ public class PlayerControl : MonoBehaviour
     private void Move()
     {
         // 프레임 마다 조금씩 이동 처리.
-
         // 이동해야하는 방향 벡터를 구함.
         Vector3 direction = moveTarget.transform.position - transform.position;
+
+        // 회전 처리.
+        // 목표 지점을 향하는 방향을 구하고, 회전 적용.
+        Vector3 directionXZ = direction;
+        directionXZ.y = transform.position.y;
+
+        // 회전이 필요한 경우에만 처리.
+        if (directionXZ != Vector3.zero)
+        {
+            //transform.rotation = Quaternion.LookRotation(directionXZ);
+            Quaternion targetRotation = Quaternion.LookRotation(directionXZ);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                20f * Time.deltaTime
+            );
+        }
 
         // 이번 프레임에 이동할 양 = 이동 방향 * 이동 빠르기 * 프레임 시간(DeltaTime).
         Vector3 position = direction.normalized * 3f * Time.deltaTime;
@@ -40,7 +60,10 @@ public class PlayerControl : MonoBehaviour
 
         // 목표 지점에 도착했으면 Idle(정지)로 전환.
         // 내 위치와 이동해야하는 목표 위치 사이의 거리를 구하기.
-        float distance = Vector3.Distance(transform.position,moveTarget.transform.position);
+        float distance = Vector3.Distance(
+            transform.position,
+            moveTarget.transform.position
+            );
 
         // 남은 거리가 오차범위(약 20cm) 안쪽이라면 도착으로 판정.
         if (distance <= 0.2f)
@@ -48,6 +71,10 @@ public class PlayerControl : MonoBehaviour
             // 상태를 정지로 전환하고, 이동 목표 GO 끄기.
             state = State.Idle;
             moveTarget.SetActive(false);
+
+            // 애니메이션 설정.
+            //refAnimator.SetInteger("State", 0);
+            refAnimator.SetInteger("State", (int)state);
         }
     }
 
@@ -56,6 +83,16 @@ public class PlayerControl : MonoBehaviour
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
+        }
+
+        if (characterController == null)
+        {
+            characterController = GetComponent<CharacterController>();
+        }
+
+        if (refAnimator == null)
+        {
+            refAnimator = GetComponentInChildren<Animator>();
         }
 
         state = State.Idle;
@@ -94,6 +131,11 @@ public class PlayerControl : MonoBehaviour
 
                 // 상태 변경.
                 state = State.Move;
+
+                // 애니메이션 설정.
+                //refAnimator.SetInteger("State", 1);
+                refAnimator.SetInteger("State", (int)state);
+
             }
         }
 
