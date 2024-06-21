@@ -52,7 +52,7 @@ public class PlayerControl : MonoBehaviour
             );
         }
 
-        // 이번 프레임에 이동할 양 = 이동 방향 * 이동 빠르기 * 프레임 시간(DeltaTime).
+        // 이번 프레임에 이동할 양 = 이동 방향 × 이동 빠르기 × 프레임 시간(DeltaTime).
         Vector3 position = direction.normalized * 3f * Time.deltaTime;
         //position += transform.position;
 
