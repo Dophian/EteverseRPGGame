@@ -17,7 +17,7 @@ namespace RPGGame
             OnMouseClicked.AddListener(action);
         }
 
-        private void OnFire()
+        public void OnFire()
         {
             //Debug.Log("클릭됨");
 

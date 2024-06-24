@@ -48,5 +48,35 @@ namespace RPGGame
                 );
             }
         }
+
+        // 시야 판정 메소드.
+        public static bool IsInSight(
+            Transform selfTransform,
+            Transform targetTransform,
+            float sightAngle,
+            float sightRange)
+        {
+            // 각도 안에 있는지?
+            float angle = Vector3.Angle(
+                selfTransform.forward, 
+                targetTransform.position - selfTransform.position
+            );
+            
+            if (angle <= sightAngle) 
+            {
+                // 거리 안에 있는지?
+                float distance = Vector3.Distance(
+                    selfTransform.position, targetTransform.position 
+                );
+
+                if (distance <= sightRange)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }
