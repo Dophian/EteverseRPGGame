@@ -1,5 +1,5 @@
 {
-    "name": "EteverseRPGGame",
+    "name": "PlayerActions",
     "maps": [
         {
             "name": "Player",
@@ -30,7 +30,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [

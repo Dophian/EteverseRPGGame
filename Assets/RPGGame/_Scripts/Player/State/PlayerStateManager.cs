@@ -12,6 +12,8 @@ namespace RPGGame
             None = -1,
             PlayerIdle,
             PlayerMove,
+            PlayerChase,
+            PlayerAttack,
             Length
         }
 
@@ -30,10 +32,14 @@ namespace RPGGame
         // 이동 목표 지점을 표시해주는 이동 마커.
         [SerializeField] private GameObject moveMarker;
 
+        // 적 캐릭터를 공격할 때 표시할 마커.
+        [SerializeField] private GameObject attackMarker;
+
         // 레이어 값 - Ray와 충돌하는 LayerMask 생성에 사용.
         //[SerializeField] private string[] layerNames;
         [SerializeField] private string blockLayerName = "Block";
         [SerializeField] private string movableLayerName = "Movable";
+        [SerializeField] private string monsterLayerName = "Monster";
 
         // 레이어 마스크.
         private int layerMask;
@@ -50,10 +56,39 @@ namespace RPGGame
             } 
         }
 
+        public Vector3 AttackPosition
+        {
+            get
+            {
+                return attackMarker.transform.position;
+            }
+        }
+
+        // 현재 공격을 대상으로 하는 몬스터.
+        public MonsterStateManager AttackTarget
+        {
+            get
+            {
+                return attackMarker.GetComponentInParent<MonsterStateManager>();
+            }
+        }
+
         // 마커를 켜고 끌 때 사용할 공개 메소드 (메시지).
         public void SetMoveMarkerActive(bool isActive)
         {
             moveMarker.SetActive(isActive);
+        }
+
+        // 공격 마커를 켜고 끌 때 사용할 공개 메소드 (메세지).
+        public void SetAttackMarkerActive(bool isActive)
+        {
+            attackMarker.SetActive(isActive);
+            
+            // 마커를 끌 때는 트랜스폼 계층 해제.
+            if (isActive == false)
+            {
+                attackMarker.transform.SetParent(null);
+            }
         }
 
         // 초기 설정.
@@ -71,7 +106,7 @@ namespace RPGGame
             //layerMask = 1 << LayerMask.NameToLayer(layerNames[0]);
             //layerMask += 1 << LayerMask.NameToLayer(layerNames[1]);
             //layerMask = LayerMask.GetMask(layerNames);
-            layerMask = LayerMask.GetMask(blockLayerName, movableLayerName);
+            layerMask = LayerMask.GetMask(blockLayerName, movableLayerName,monsterLayerName);
 
             if (mainCamera == null)
             {
@@ -122,8 +157,14 @@ namespace RPGGame
                 if (layer.Equals(LayerMask.NameToLayer(blockLayerName)))
                 {
                     //Debug.Log("Block이어서 이동 불가.");
+
+                    // 마커 모두 끄기.
+                    SetMoveMarkerActive(false);
+                    SetAttackMarkerActive(false);
                     return;
                 }
+
+                // Movable 일 때.
                 else if (layer.Equals(LayerMask.NameToLayer(movableLayerName)))
                 {
                     // 이동 마커 위치 옮김.
@@ -131,8 +172,34 @@ namespace RPGGame
                     //point.y = transform.position.y;
                     moveMarker.transform.position = point;
 
+                    // 공격 마커 끄기.
+                    SetAttackMarkerActive(false);
+
+                    // 이동 마커 켜기.
+                    SetMoveMarkerActive(true);
+
                     // 상태 변경.
                     SetState(State.PlayerMove);
+                }
+
+                // Monster 일 때.
+                else if (layer.Equals(LayerMask.NameToLayer(monsterLayerName)))
+                {
+                    // 공격 마커 위치 설정.
+                    // 충돌한 객체의 트랜스폼을 부모로 설정.
+                    attackMarker.transform.SetParent(hitInfo.collider.transform);
+
+                    // 부모 트랜스폼과 위치 동기화(맞추기).
+                    attackMarker.transform.localPosition = Vector3.zero;
+
+                    // 공격 마커 켜기.
+                    SetAttackMarkerActive(true);
+
+                    // 이동 마커 끄기.
+                    SetMoveMarkerActive(false);
+
+                    // 상태 변경 (쫓아가기).
+                    SetState(State.PlayerChase);
                 }
             }
         }

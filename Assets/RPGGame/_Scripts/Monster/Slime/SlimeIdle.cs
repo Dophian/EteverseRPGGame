@@ -33,12 +33,6 @@ namespace RPGGame
                 manager.SetState(MonsterStateManager.State.Patrol);
                 elapsedTime = 0f;
             }
-
-            // 플레이어가 시야에 들어오면 쫒아가기.
-            if (Utils.IsInSight(refTransform, manager.PlayerTransform, 60f, 3f))
-            {
-                manager.SetState(MonsterStateManager.State.Chase);
-            }
         }
 
         protected override void OnDisable()

@@ -17,12 +17,16 @@ namespace RPGGame
             OnMouseClicked.AddListener(action);
         }
 
-        public void OnFire()
+        public void OnFire(InputAction.CallbackContext context)
         {
-            //Debug.Log("클릭됨");
+            Debug.Log($"{context.phase}");
 
-            OnMouseClicked?.Invoke(Mouse.current.position.ReadValue()
-            );
+            // 마우스 버튼 눌림만 확인.
+            if (context.performed)
+            {
+                // 이벤트 발행.
+                OnMouseClicked?.Invoke(Mouse.current.position.ReadValue());
+            }
         }
     }
 }

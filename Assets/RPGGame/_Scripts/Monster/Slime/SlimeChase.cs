@@ -14,24 +14,11 @@ namespace RPGGame
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            // 예외 처리.
-            // 플레이어가 시야에서 벗어나면 정지 상태로 전환.
-            if (Utils.IsInSight(refTransform, manager.PlayerTransform, 60f, 3f) == false)
-            {
-                manager.SetState(MonsterStateManager.State.Idle);
-            }
         }
 
         protected override void Update()
         {
             base.Update();
-
-            // 플레이어가 시야에서 벗어나면 다시 정지로 전환.
-            if (Utils.IsInSight(refTransform, manager.PlayerTransform, 60f, 3f) == false)
-            {
-                manager.SetState(MonsterStateManager.State.Idle);
-            }
 
             // 쫓아가기 (이동/회전).
             // 회전

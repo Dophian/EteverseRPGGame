@@ -49,6 +49,21 @@ namespace RPGGame
             }
         }
 
+        // 한 번에 타겟을 바라보는 회전 메소드.
+        public static void RotateToBurst(Transform selfTransform,
+            Vector3 destination)
+        {
+            // 이동 방향.
+            Vector3 direction = destination - selfTransform.position;
+
+            // 이동하는 방향에 맞게 회전.
+            Vector3 directionXZ = new Vector3(direction.x, 0f, direction.z);
+            if (directionXZ != Vector3.zero)
+            {
+                selfTransform.rotation = Quaternion.LookRotation(directionXZ);
+            }
+        }
+
         // 시야 판정 메소드.
         public static bool IsInSight(
             Transform selfTransform,

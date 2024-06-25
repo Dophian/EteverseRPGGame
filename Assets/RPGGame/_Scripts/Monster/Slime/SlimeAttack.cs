@@ -11,16 +11,6 @@ namespace RPGGame
         {
             base.Update();
 
-            // 시야에서 벗어났는지 확인 -> 정지 상태로 전환.
-            if (Utils.IsInSight(
-                refTransform,
-                manager.PlayerTransform,
-                60f,
-                3f) == false)
-            {
-                manager.SetState(MonsterStateManager.State.Idle);
-            }
-
             // 플레이어와의 거리가 공격 가능 범위를 벗어나면 다시 쫒아가기.
 
             if (Vector3.Distance(
