@@ -29,7 +29,9 @@ namespace RPGGame
             Utils.RotateToBurst(refTransform, manager.AttackPosition);
 
             // 거리확인 및 쫓아가기.
-            if (Vector3.Distance(refTransform.position, manager.AttackPosition) > 2f)
+            if (Vector3.Distance(
+                refTransform.position,
+                manager.AttackPosition) > manager.Data.attackRange)
             {
                 manager.SetState(PlayerStateManager.State.PlayerChase);
             }

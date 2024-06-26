@@ -9,7 +9,7 @@ namespace RPGGame
         // 필드.
 
         // 대기할 시간 (단위: 초).
-        [SerializeField] private float waitTime = 3f;
+        //[SerializeField] private float waitTime = 3f;
 
         // 경과시간을 계산하기 위한 변수.
         private float elapsedTime = 0f;
@@ -28,7 +28,7 @@ namespace RPGGame
 
             // 타이머 업데이트.
             elapsedTime += Time.deltaTime;
-            if (elapsedTime > waitTime)
+            if (elapsedTime > manager.Data.patrolWaitTime)
             {
                 manager.SetState(MonsterStateManager.State.Patrol);
                 elapsedTime = 0f;

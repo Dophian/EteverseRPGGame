@@ -33,11 +33,13 @@ namespace RPGGame
         private void LateUpdate()
         {
             // 약간의 딜레이(지연 효과)를 적용하면서 부드럽게 이동 처리.
-            refTransform.position = Vector3.Lerp(
-                refTransform.position,
-                target.position,
-                lag * Time.deltaTime
-            );
+            //refTransform.position = Vector3.Lerp(
+            //    refTransform.position,
+            //    target.position,
+            //    lag * Time.deltaTime
+            //);
+
+            refTransform.position = target.position;
         }
 
     }

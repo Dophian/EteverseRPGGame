@@ -19,7 +19,7 @@ namespace RPGGame
 
         public void OnFire(InputAction.CallbackContext context)
         {
-            Debug.Log($"{context.phase}");
+            //Debug.Log($"{context.phase}");
 
             // 마우스 버튼 눌림만 확인.
             if (context.performed)

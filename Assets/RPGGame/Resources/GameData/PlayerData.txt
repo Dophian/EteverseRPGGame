@@ -1,0 +1,1 @@
+{"moveSpeed":5.0,"rotateSpeed":600.0,"maxHP":100.0,"damage":30.0,"attackRange":2.0}

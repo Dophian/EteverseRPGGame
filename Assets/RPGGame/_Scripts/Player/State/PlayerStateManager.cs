@@ -14,6 +14,7 @@ namespace RPGGame
             PlayerMove,
             PlayerChase,
             PlayerAttack,
+            PlayerDead,
             Length
         }
 
@@ -25,6 +26,9 @@ namespace RPGGame
 
         // 스테이가 변경될 떄 발행되는 이벤트.
         [SerializeField] private UnityEvent<State> OnPlayerStateChanged;
+
+        // 대미지를 받을 때 발행하는 이벤트.
+        [SerializeField] private UnityEvent<float> OnPlayerDamaged;
 
         // 캐릭터 컨트롤러 컴포넌트.
         [SerializeField] private CharacterController characterController;
@@ -40,6 +44,10 @@ namespace RPGGame
         [SerializeField] private string blockLayerName = "Block";
         [SerializeField] private string movableLayerName = "Movable";
         [SerializeField] private string monsterLayerName = "Monster";
+        
+        // 플레이어 데이터 Scriptable Object(파일) 참조 변수.
+        //[SerializeField] private PlayerData data;
+        public PlayerData Data { get; private set; }
 
         // 레이어 마스크.
         private int layerMask;
@@ -73,6 +81,15 @@ namespace RPGGame
             }
         }
 
+        // 플레이어가 주겅ㅆ는지 알려주는 프로퍼티.
+        public bool IsPlayerDead
+        {
+            get
+            {
+                return state == State.PlayerDead;
+            }
+        }
+
         // 마커를 켜고 끌 때 사용할 공개 메소드 (메시지).
         public void SetMoveMarkerActive(bool isActive)
         {
@@ -100,6 +117,24 @@ namespace RPGGame
             {
                 inputManager.SubscribeOnMouseClicked(OnMousClicked);
             }
+
+            // 이벤트 구독 - 플레이어의 죽음 이벤트 구독.
+            var damageController = GetComponentInChildren<PlayerDamageController>();
+            if (damageController != null)
+            {
+                damageController.SubscribeOnPlayerDead(OnPlayerDead);
+            }
+
+            // 플레이어 데이터 파일 검색.
+            Data = Resources.Load("GameData/Player Data") as PlayerData;
+            if (Data == null)
+            {
+                Debug.LogWarning("플레이어 데이터 로드 실패.");
+            }
+            Data.ToJson();
+
+            //Data =(PlayerData)Resources.Load("GameData/Player Data");
+
 
             // 레이어 마스크 설정.
             //layerMask = (1 << 8) | (1 << 9);
@@ -144,6 +179,12 @@ namespace RPGGame
         // 이벤트 리스너 메소드.
         private void OnMousClicked(Vector2 mousePosition)
         {
+            // 플레이어가 죽으면 입력 막기.
+            if (IsPlayerDead)
+            {
+                return;
+            }
+
             // 카메라를 기준으로 Ray(반직선) 생성.
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
@@ -243,7 +284,7 @@ namespace RPGGame
         public void SetState(State newState)
         {
             // 예외 처리.
-            if (state == newState)
+            if (state == newState || state == State.PlayerDead)
             {
                 return;
             }
@@ -270,11 +311,33 @@ namespace RPGGame
         // 스테이트 변경 이벤트에 등록하는 메소드.
         public void SubscribeOnPlayerStateChanged(UnityAction<State> action)
         {
-            OnPlayerStateChanged.AddListener(action);
+            OnPlayerStateChanged?.AddListener(action);
             // 등록 해제.
             //OnPlayerStateChanged.RemoveListener(action);
         }
 
+        // 대미지 받았을 때 잘행되는 이벤트에 등록(구독)하는 메소드.
+        public void SubscribeOnPlayerDamaged(UnityAction<float> action)
+        {
+            OnPlayerDamaged?.AddListener(action);
+        }
 
+        // 대미지 관리자를 통해 대미지를 전달 받는 메소드.
+        public void ReceiveDamage(float damage)
+        {
+            // 대매지를 받았다는 이벤트 발행.
+            OnPlayerDamaged?.Invoke(damage);
+        }
+
+        // 플레이어가 죽었을 때 발행되는 이벤트에  구독할 메소드
+        private void OnPlayerDead()
+        {
+            // 죽음 상태로 전환.
+            SetState(State.PlayerDead);
+
+            // 마커 끄기 - 고민거리. 이게 누가 할 일인가?
+            SetAttackMarkerActive(false );
+            SetMoveMarkerActive(false );
+        }
     }
 }

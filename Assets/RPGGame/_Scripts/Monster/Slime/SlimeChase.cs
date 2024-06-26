@@ -9,7 +9,7 @@ namespace RPGGame
     public class SlimeChase : MonsterState
     {
         // 공격 가능 거리 (단위: 미터).
-        [SerializeField] private float attackRange = 1.5f;
+        //[SerializeField] private float attackRange = 1.5f;
 
         protected override void OnEnable()
         {
@@ -20,16 +20,23 @@ namespace RPGGame
         {
             base.Update();
 
+            // 플레이어가 죽었으면 중단.
+            if (manager.AttackTarget != null && manager.AttackTarget.IsPlayerDead)
+            {
+                manager.SetState(MonsterStateManager.State.Idle);
+                return;
+            }
+
             // 쫓아가기 (이동/회전).
             // 회전
-            Utils.RotateToward(refTransform,manager.PlayerTransform.position, 360f);
+            Utils.RotateToward(refTransform,manager.PlayerTransform.position, manager.Data.rotateSpeed);
 
             // 이동.
             if (Utils.MoveToward(
                 refTransform,
                 characterController,
                 manager.PlayerTransform.position,
-                3f) <= attackRange )
+                manager.Data.chaseSpeed) <= manager.Data.attackRange)
             {
                 manager.SetState(MonsterStateManager.State.Attack);
             }

@@ -11,11 +11,18 @@ namespace RPGGame
         {
             base.Update();
 
+            // 플레이어가 죽었으면 중단.
+            if (manager.AttackTarget != null && manager.AttackTarget.IsPlayerDead)
+            {
+                manager.SetState(MonsterStateManager.State.Idle);
+                return;
+            }
+
             // 플레이어와의 거리가 공격 가능 범위를 벗어나면 다시 쫒아가기.
 
             if (Vector3.Distance(
                 refTransform.position,
-                manager.PlayerTransform.position) > 1.5f)
+                manager.PlayerTransform.position) > manager.Data.attackRange)
             {
                 manager.SetState(MonsterStateManager.State.Chase);
             }

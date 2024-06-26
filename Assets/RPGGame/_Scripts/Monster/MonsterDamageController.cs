@@ -13,6 +13,9 @@ namespace RPGGame
         // 몬스터의 체력이 변경되면 발행되는 이벤트.
         [SerializeField] private UnityEvent<float,float> OnMonsterHPChanged;
 
+        // 공격 메세지 전달을 위해 필요한 메소드.
+        [SerializeField] private MonsterStateManager manager;
+
         // 이벤트에 구독하는 메소드.
         public void SubscribeOnMonsterDead(UnityAction action)
         {
@@ -27,11 +30,17 @@ namespace RPGGame
         private void Awake()
         {
             // 이벤트 구독.
-            var manager = GetComponentInParent<MonsterStateManager>();
+            manager = GetComponentInParent<MonsterStateManager>();
             if (manager != null)
             {
                 manager.SubscribeOnMonsterDamaged(OnDamaged);
             }
+        }
+
+        private void Start()
+        {
+            // 시작하면 데이터에서 체력값을 읽어와 설정.
+            hp = manager.Data.maxHP;
         }
 
         // 메소드.
@@ -46,13 +55,32 @@ namespace RPGGame
             hp = Mathf.Max(0f,hp);
 
             // 체력 변경 이벤트 발행.
-            OnMonsterHPChanged?.Invoke(hp, 50f);
+            OnMonsterHPChanged?.Invoke(hp, manager.Data.maxHP);
 
             // hp가 0이면 죽음.
             if (hp == 0f)
             {
                 OnMonsterDead?.Invoke();
             }
+        }
+    
+        // 공격 애니메이션에서 발행하는 공격 이벤트 리스너 메소드.
+        private void ApplyDamage()
+        {
+            // 예외처리.
+            if(manager == null)
+            {
+                // 몬스터 상태 관리자 검색.
+                manager = transform.parent.GetComponentInChildren<MonsterStateManager>();
+            }
+
+            if (manager.AttackTarget == null)
+            {
+                return;
+            }
+            // 대미지를 시스템을 통해 플레이어에게 전달.
+            // 파라미터: 몬스터 상태 관리자/플레이어 상태 관리자/ 대미지
+            DamageManager.SendDamageToPlayer(manager, manager.AttackTarget, manager.Data.damage);
         }
     }
 }

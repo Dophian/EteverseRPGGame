@@ -42,6 +42,24 @@ namespace RPGGame
         // 플레이어의 트랜스폼 컴포넌트.
         public Transform PlayerTransform { get; private set; }
 
+        // 몬스터 데이터 Scriptable Object.
+        public MonsterData Data { get; private set; }
+
+        // 몬스터가 공격할 때 사용.
+        public PlayerStateManager AttackTarget
+        {
+            get
+            {
+                // 예외 처리.
+                if (PlayerTransform == null)
+                {
+                    return null;
+                }
+
+                return PlayerTransform.GetComponent<PlayerStateManager>();
+            }
+        }
+
         // 몬스터의 죽음 여부를 알려주는 프로퍼티.
         public bool IsMonsterDead
         {
@@ -68,6 +86,13 @@ namespace RPGGame
 
             // 플레이어 트랜스폼 설정.
             PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+            // 데이터 설정.
+            Data = Resources.Load("GameData/Monster Data") as MonsterData;
+            if (Data == null)
+            {
+                Debug.LogWarning($"몬스터 데이터 로드 실패 {name}");
+            }
 
             // 상태 컴포넌트 배열 초기화.
             states = new MonsterState[(int)State.Length];

@@ -13,7 +13,13 @@ namespace RPGGame
             PlayerStateManager to,
             float damage)
         {
+            // 예외처리.
+            if (to == null)
+            {
+                return;
+            }
 
+            to.ReceiveDamage(damage);
         }
 
         // 플레이어가 몬스터에게 대미지를 전달할 때 사용하는 메소드.
@@ -22,6 +28,12 @@ namespace RPGGame
             MonsterStateManager to,
             float damage)
         {
+            if (to == null)
+            {
+                return;
+            }
+        
+        
             to.ReceiveDamage(damage);
         }
     }

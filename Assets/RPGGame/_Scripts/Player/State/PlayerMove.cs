@@ -5,10 +5,6 @@ namespace RPGGame
 {
     public class PlayerMove : PlayerState
     {
-        // 필드.
-        [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float rotateSpeed = 540f;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -22,14 +18,14 @@ namespace RPGGame
             base.Update();
 
             // 회전.
-            Utils.RotateToward(refTransform, manager.MovePosition, rotateSpeed);
+            Utils.RotateToward(refTransform, manager.MovePosition, manager.Data.rotateSpeed);
 
             // 이동 및 도착 확인.
             if (Utils.MoveToward(
                 refTransform,
                 characterController,
                 manager.MovePosition,
-                moveSpeed) <= 0.5f)
+                manager.Data.moveSpeed) <= 0.5f)
             {
                 manager.SetState(PlayerStateManager.State.PlayerIdle);
             }

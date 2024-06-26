@@ -12,14 +12,14 @@ namespace RPGGame
             base.Update();
 
             // 적 쫓아가기 → 이동/회전.
-            Utils.RotateToward(refTransform, manager.AttackPosition, 540f);
+            Utils.RotateToward(refTransform, manager.AttackPosition, manager.Data.rotateSpeed);
             
             // 공격 가능 범위는 2M
             if (Utils.MoveToward(
                 refTransform,
                 characterController,
                 manager.AttackPosition,
-                5f) <= 2f )
+                manager.Data.moveSpeed) <= manager.Data.attackRange)
             {
                 manager.SetState(PlayerStateManager.State.PlayerAttack);
             }

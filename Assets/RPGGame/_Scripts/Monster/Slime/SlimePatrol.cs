@@ -16,10 +16,10 @@ namespace RPGGame
         [SerializeField] private Transform moveMarker;
 
         // 이동할 때 사용할 이동 속도 (단위: 미터/초).
-        [SerializeField] private float moveSpeed = 3f;
+        //[SerializeField] private float moveSpeed = 3f;
 
         // 이동할 때 사용할 회전 속도 (단위: 각도/초).
-        [SerializeField] private float rotateSpeed = 360f;
+        //[SerializeField] private float rotateSpeed = 360f;
 
         protected override void OnEnable()
         {
@@ -46,10 +46,10 @@ namespace RPGGame
             base.Update();
 
             // 회전.
-            Utils.RotateToward(refTransform, movePosition, rotateSpeed);
+            Utils.RotateToward(refTransform, movePosition, manager.Data.rotateSpeed);
 
             // 이동.
-            if (Utils.MoveToward(refTransform, characterController, movePosition, moveSpeed) <= 0.5f)
+            if (Utils.MoveToward(refTransform, characterController, movePosition, manager.Data.patrolSpeed) <= 0.5f)
             {
                 manager.SetState(MonsterStateManager.State.Idle);
             }
