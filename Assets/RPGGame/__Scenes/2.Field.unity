@@ -422,6 +422,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster Slime
       objectReference: {fileID: 0}
+    - target: {fileID: 7789927968947160265, guid: 04efaca160ea9c940853fa44ba2cd40f, type: 3}
+      propertyPath: m_Height
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7789927968947160265, guid: 04efaca160ea9c940853fa44ba2cd40f, type: 3}
+      propertyPath: m_Radius
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -262,7 +262,8 @@ namespace RPGGame
                     attackMarker.transform.SetParent(hitInfo.collider.transform);
 
                     // 부모 트랜스폼과 위치 동기화(맞추기).
-                    attackMarker.transform.localPosition = Vector3.zero;
+                    //attackMarker.transform.localPosition = Vector3.zero;
+                    attackMarker.transform.localPosition = new Vector3(0f, 0.1f, 0f);
 
                     // 공격 마커 켜기.
                     SetAttackMarkerActive(true);
