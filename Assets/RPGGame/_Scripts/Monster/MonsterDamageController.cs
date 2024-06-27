@@ -78,6 +78,12 @@ namespace RPGGame
             {
                 return;
             }
+            // 플레이어가 스킬 상태일 때는 
+            if (manager.AttackTarget.CurrentState == PlayerStateManager.State.PlayerSkill)
+            {
+                return ;
+            } 
+
             // 대미지를 시스템을 통해 플레이어에게 전달.
             // 파라미터: 몬스터 상태 관리자/플레이어 상태 관리자/ 대미지
             DamageManager.SendDamageToPlayer(manager, manager.AttackTarget, manager.Data.damage);

@@ -17,3 +17,6 @@ MonoBehaviour:
   maxHP: 100
   damage: 30
   attackRange: 2
+  skillCoolTime: 2.3
+  skillAttackDamage: 60
+  skillAttackRange: 7

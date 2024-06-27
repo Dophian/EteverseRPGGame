@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WildPig Animator Override Controller
+  m_Controller: {fileID: 9100000, guid: 6cff9c937d7b0184d87d749e338ef42f, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3acf778fefb49504385ed5c5a0126cb6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 033f0d2f7294e344d91e5dc1533a49d4, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 29c06bb4bd0f9264dbe5c1667f13623d, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: cfa29587e09359e43a77528f4de36573, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 04ce3cb22d5d7994398dbfd8c14b56a8, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 1e798b815d433ea4993f4947113ad137, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 01904f9163f7bae47bd85c15f4016538, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6e3c698f4b5f624e861f49c519f52e3, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2e50df3e5bb162346b6e41c494032f9f, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 224240d3e2875e14b825cc3f7fcd8a4a, type: 3}

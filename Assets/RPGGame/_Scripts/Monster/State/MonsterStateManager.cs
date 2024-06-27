@@ -43,7 +43,12 @@ namespace RPGGame
         public Transform PlayerTransform { get; private set; }
 
         // 몬스터 데이터 Scriptable Object.
-        public MonsterData Data { get; private set; }
+        public MonsterData Data 
+        { get
+            {
+                return DataManager.GetMonsterData(monsterName);
+            } 
+        }
 
         // 몬스터가 공격할 때 사용.
         public PlayerStateManager AttackTarget
@@ -88,11 +93,11 @@ namespace RPGGame
             PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
             // 데이터 설정.
-            Data = Resources.Load("GameData/Monster Data") as MonsterData;
-            if (Data == null)
-            {
-                Debug.LogWarning($"몬스터 데이터 로드 실패 {name}");
-            }
+            //Data = Resources.Load("GameData/Monster Data") as MonsterData;
+            //if (Data == null)
+            //{
+            //    Debug.LogWarning($"몬스터 데이터 로드 실패 {name}");
+            //}
 
             // 상태 컴포넌트 배열 초기화.
             states = new MonsterState[(int)State.Length];

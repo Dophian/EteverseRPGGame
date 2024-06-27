@@ -38,7 +38,8 @@ namespace RPGGame
         // 업데이트 기능.
         protected virtual void Update()
         {
-
+            // 중력 적용.
+            characterController.Move(Physics.gravity * Time.deltaTime);
         }
 
         // 탈출(종료) 기능.

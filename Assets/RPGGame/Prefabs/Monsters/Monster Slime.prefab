@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 404677258528081139}
   - component: {fileID: 7789927968947160265}
   - component: {fileID: 7967682371760598170}
-  - component: {fileID: 4346955549196433861}
-  - component: {fileID: 939104387299326257}
-  - component: {fileID: 6079913826168320049}
-  - component: {fileID: 5659817048418072655}
-  - component: {fileID: 979006574768174833}
-  - component: {fileID: 7124776047368207555}
+  - component: {fileID: 478637349027990421}
+  - component: {fileID: 3322626936744584128}
+  - component: {fileID: 7529553747807172420}
+  - component: {fileID: 5453244126462032437}
+  - component: {fileID: 7920743577630479231}
   m_Layer: 10
   m_Name: Monster Slime
   m_TagString: Untagged
@@ -91,7 +90,7 @@ MonoBehaviour:
   OnMonsterDamaged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4346955549196433861
+--- !u!114 &478637349027990421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,11 +99,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300220991446635358}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10c922d30533e8848b621cd8fdce420f, type: 3}
+  m_Script: {fileID: 11500000, guid: a88cefe37af374d4ebb8a016f08970d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 3
---- !u!114 &939104387299326257
+--- !u!114 &3322626936744584128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,14 +111,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300220991446635358}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c28be9b7b1490e04a85318eac7ca8a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: ca24d19864e89194380112c65cec6abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movePosition: {x: 0, y: 0, z: 0}
   moveMarker: {fileID: 0}
-  moveSpeed: 3
-  rotateSpeed: 360
---- !u!114 &6079913826168320049
+--- !u!114 &7529553747807172420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,11 +125,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300220991446635358}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbe12a960d9a0d94180ea064c01b67ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 8522da916cdaf074896e1129e34a803e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 1.5
---- !u!114 &5659817048418072655
+--- !u!114 &5453244126462032437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,10 +137,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300220991446635358}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69a2f580c1392de478610b13a3a4519d, type: 3}
+  m_Script: {fileID: 11500000, guid: e5d82a79889b8334986000780fcedee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &979006574768174833
+--- !u!114 &7920743577630479231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,32 +149,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300220991446635358}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52cce176ef835474ba867336baf77197, type: 3}
+  m_Script: {fileID: 11500000, guid: 08b26c05121ddc34698ccd82049f3a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deadWaitTime: 3
-  refCollider: {fileID: 7124776047368207555}
---- !u!135 &7124776047368207555
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300220991446635358}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.6
-  m_Center: {x: 0, y: 0, z: 0}
+  refCollider: {fileID: 0}
 --- !u!1 &4117764634696437325
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,8 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  sightAngle: 60
-  sightRange: 5
 --- !u!1 &5559876856896450544
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,3 +563,4 @@ MonoBehaviour:
   OnMonsterHPChanged:
     m_PersistentCalls:
       m_Calls: []
+  manager: {fileID: 0}

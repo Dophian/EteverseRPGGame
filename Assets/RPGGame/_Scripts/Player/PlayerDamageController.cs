@@ -77,5 +77,18 @@ namespace RPGGame
                 manager.Data.damage
             );
         }
+
+        // 스킬 공격.
+        private void ApplySkillDamage()
+        {
+            //Debug.Log("스킬 발동");
+            DamageManager.SendDamageToRadial(
+                transform,
+                manager.Data.skillAttackDamage,
+                manager.Data.skillAttackRange,
+                //1 << 10
+                LayerMask.GetMask("Monster")
+            );
+        }
     }
 }

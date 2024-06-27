@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace RPGGame
 {
@@ -15,11 +16,15 @@ namespace RPGGame
             PlayerChase,
             PlayerAttack,
             PlayerDead,
+            PlayerSkill,
             Length
         }
 
         // 플레이어의 스테이트를 나타내는 변수.
         [SerializeField] private State state = State.None;
+
+        // 플레이어의 현재 상태를 전달하는 Getter.
+        public State CurrentState { get { return state; } }
 
         // 플레이어 스테이트의 배열.
         [SerializeField] private PlayerState[] states;
@@ -47,7 +52,13 @@ namespace RPGGame
         
         // 플레이어 데이터 Scriptable Object(파일) 참조 변수.
         //[SerializeField] private PlayerData data;
-        public PlayerData Data { get; private set; }
+        public PlayerData Data 
+        {
+            get 
+            {
+                return DataManager.GetPlayerData();
+            } 
+        }
 
         // 레이어 마스크.
         private int layerMask;
@@ -93,12 +104,23 @@ namespace RPGGame
         // 마커를 켜고 끌 때 사용할 공개 메소드 (메시지).
         public void SetMoveMarkerActive(bool isActive)
         {
+            // 예외 처리.
+            if (moveMarker == null)
+            {
+                return;
+            }
+
             moveMarker.SetActive(isActive);
         }
 
         // 공격 마커를 켜고 끌 때 사용할 공개 메소드 (메세지).
         public void SetAttackMarkerActive(bool isActive)
         {
+            // 예외 처리.
+            if (attackMarker == null)
+            {
+                return;
+            }
             attackMarker.SetActive(isActive);
             
             // 마커를 끌 때는 트랜스폼 계층 해제.
@@ -126,12 +148,12 @@ namespace RPGGame
             }
 
             // 플레이어 데이터 파일 검색.
-            Data = Resources.Load("GameData/Player Data") as PlayerData;
-            if (Data == null)
-            {
-                Debug.LogWarning("플레이어 데이터 로드 실패.");
-            }
-            Data.ToJson();
+            //Data = Resources.Load("GameData/Player Data") as PlayerData;
+            //if (Data == null)
+            //{
+            //    Debug.LogWarning("플레이어 데이터 로드 실패.");
+            //}
+            //Data.ToJson();
 
             //Data =(PlayerData)Resources.Load("GameData/Player Data");
 
@@ -180,7 +202,16 @@ namespace RPGGame
         private void OnMousClicked(Vector2 mousePosition)
         {
             // 플레이어가 죽으면 입력 막기.
-            if (IsPlayerDead)
+            // EventSystem.current.IsPointerOverGameObject() 함수는 마우스 포인터가 UI 위에 있는지
+            // 확인해주는 함수.
+
+            if (IsPlayerDead || EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
+            // 스킬 상태일 때는 무시.
+            if (state == State.PlayerSkill)
             {
                 return;
             }
@@ -338,6 +369,12 @@ namespace RPGGame
             // 마커 끄기 - 고민거리. 이게 누가 할 일인가?
             SetAttackMarkerActive(false );
             SetMoveMarkerActive(false );
+        }
+
+        // 스킬 버튼이 눌렸을 때 실행될 메소드.
+        public void OnSkillButtonClicked()
+        {
+            SetState(State.PlayerSkill);
         }
     }
 }

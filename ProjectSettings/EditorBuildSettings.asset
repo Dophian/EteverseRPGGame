@@ -4,5 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RPGGame/__Scenes/1.Villiage.unity
+    guid: 6a270daa10c278c46af4d3b25aa0850c
+  - enabled: 1
+    path: Assets/RPGGame/__Scenes/2.Field.unity
+    guid: 5644a42e33da1da4b9490cf4b9aab17f
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

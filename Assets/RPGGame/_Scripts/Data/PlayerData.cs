@@ -15,6 +15,11 @@ namespace RPGGame
         public float damage = 30f;
         public float attackRange = 1.5f;
 
+        // 스킬 스탯 (스킬 시간/스킬 공격력/스킬 범위(반경)).
+        public float skillCoolTime = 2f;
+        public float skillAttackDamage = 60f;
+        public float skillAttackRange = 7f;
+
         public void ToJson()
         {
             string jsonString = JsonUtility.ToJson(this);
