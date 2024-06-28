@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.WSA;
-
-namespace RPGGame
+﻿namespace RPGGame
 {
     public class PlayerMove : PlayerState
     {

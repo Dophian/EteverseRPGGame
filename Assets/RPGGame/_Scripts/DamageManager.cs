@@ -55,7 +55,7 @@ namespace RPGGame
             foreach (var enemy in enemies)
             {
                 // 대미지 전달을 위해 몬스터 상태 관리자 얻어오기.
-                var target = enemy.GetComponent<MonsterStateManager>();
+                var target = enemy.transform.root.GetComponentInChildren<MonsterStateManager>();
                 if (target != null)
                 {
                     target.ReceiveDamage(damage);
@@ -64,3 +64,4 @@ namespace RPGGame
         }
     }
 }
+    

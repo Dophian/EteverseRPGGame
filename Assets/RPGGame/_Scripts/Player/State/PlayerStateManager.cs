@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
@@ -201,30 +202,12 @@ namespace RPGGame
         // 이벤트 리스너 메소드.
         private void OnMousClicked(Vector2 mousePosition)
         {
-            // 플레이어가 죽으면 입력 막기.
-            // EventSystem.current.IsPointerOverGameObject() 함수는 마우스 포인터가 UI 위에 있는지
-            // 확인해주는 함수.
-
-            if (IsPlayerDead || EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
-
-            // 스킬 상태일 때는 무시.
-            if (state == State.PlayerSkill)
-            {
-                return;
-            }
-
             // 카메라를 기준으로 Ray(반직선) 생성.
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
             // 반직선 발사(방출). hitInfo에는 충돌한 물체의 정보가 저장됨.
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, layerMask))
             {
-                // 테스트.
-                //Debug.Log(hitInfo.collider.gameObject.layer);
-
                 int layer = hitInfo.collider.gameObject.layer;
                 if (layer.Equals(LayerMask.NameToLayer(blockLayerName)))
                 {
@@ -278,41 +261,44 @@ namespace RPGGame
         }
 
         // 상태 관리에 필요한 로직 작성(매 프레임 처리가 필요한 부분).
-        //private void Update()
-        //{
-        //    // 입력 폴링(Polling).
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        // 카메라를 기준으로 Ray(반직선) 생성.
-        //        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        private void Update()
+        {
+            // ESC 키가 눌리면 게임 종료.
+            // ESC 키는 안드로이드에서는 뒤로가기(BACK 버튼)로 자동 변환됨.
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+#if UNITY_EDITOR
+                EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+            }
+            // 예외 처리.
+            if (IsPlayerDead)
+            {
+                return;
+            }
+#if UNITY_STANDALONE
+            if (EventSystem.current.IsPointerOverGameObject())
+#elif UNITY_ANDROID
+            if (EventSystem.current.IsPointerOverGameObject(0))
+#endif
+            {
+                return ;
+            }
+            if (state == State.PlayerSkill)
+            {
+                return;
+            }
 
-        //        // 반직선 발사(방출). hitInfo에는 충돌한 물체의 정보가 저장됨.
-        //        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, layerMask))
-        //        {
-        //            // 테스트.
-        //            //Debug.Log(hitInfo.collider.gameObject.layer);
+            // 입력 폴링(Polling).
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnMousClicked(Input.mousePosition);
+            }
+        }
 
-        //            int layer = hitInfo.collider.gameObject.layer;
-        //            if (layer.Equals(LayerMask.NameToLayer(blockLayerName)))
-        //            {
-        //                //Debug.Log("Block이어서 이동 불가.");
-        //                return;
-        //            }
-        //            else if (layer.Equals(LayerMask.NameToLayer(movableLayerName)))
-        //            {
-        //                // 이동 마커 위치 옮김.
-        //                Vector3 point = hitInfo.point;
-        //                //point.y = transform.position.y;
-        //                moveMarker.transform.position = point;
-
-        //                // 상태 변경.
-        //                SetState(State.PlayerMove);
-        //            }
-        //        }
-        //    }
-        //}
-
-        // 상태 설정 메소드
+        // 상태 설정 메소드.
         public void SetState(State newState)
         {
             // 예외 처리.
